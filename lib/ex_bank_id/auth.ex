@@ -34,13 +34,39 @@ defmodule ExBankID.Auth do
         default: Application.get_env(:ex_bank_id, :json_handler, ExBankID.Json.Default),
         doc:
           "Specify a custom json handler. Should be a module that implements ExBankID.Json.Handler."
+      ],
+      return_url: [
+        type: :string,
+        doc:
+          "The url to redirect the user to after the authentication process is complete."
+      ],
+      return_risk: [
+        type: :boolean,
+        default: false,
+        doc:
+          "If true, the user will be asked to confirm the transaction in their BankID app."
+      ],
+      user_visible_data: [
+        type: :string,
+        doc:
+          "The message that will be displayed in the BankID app."
+      ],
+      user_visible_data_format: [
+        type: :string,
+        doc:
+          "The format of the message that will be displayed in the BankID app."
+      ],
+      user_non_visible_data: [
+        type: :string,
+        doc:
+          "The message that will be displayed in the BankID app."
       ]
     ]
   end
 
-  def auth(ip_address, opts, params \\ []) when is_binary(ip_address) and is_list(opts) do
+  def auth(ip_address, opts) when is_binary(ip_address) and is_list(opts) do
     with {:ok, opts} <- NimbleOptions.validate(opts, options()),
-         payload = %ExBankID.Auth.Payload{} <- ExBankID.Auth.Payload.new(ip_address, params) do
+         payload = %ExBankID.Auth.Payload{} <- ExBankID.Auth.Payload.new(ip_address, opts) do
       ExBankID.HttpRequest.send_request(payload, opts)
     end
   end
