@@ -10,7 +10,7 @@ defmodule ExBankID.Auth.Payload do
 
   @spec new(binary, Keyword.t()) ::
           {:error, reason}
-          | %__MODULE__{endUserIp: binary, returnUrl: binary(), returnRisk: boolean(), userVisibleData: binary(), userVisibleDataFormat: binary(), userNonVisibleData: binary(), | nil}
+          | %__MODULE__{endUserIp: binary, returnUrl: binary(), returnRisk: boolean(), userVisibleData: binary(), userVisibleDataFormat: binary(), userNonVisibleData: binary() | nil}
   @doc """
   Returns a Payload struct containing the given ip address and personal number.
 
