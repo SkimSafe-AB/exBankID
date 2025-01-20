@@ -45,7 +45,7 @@ defmodule ExBankID.Auth.Payload do
   def new(ip_address, opts \\ []) when is_binary(ip_address) and is_list(opts) do
     with {:ok, ip_address} <- check_ip_address(ip_address),
          {:ok, return_url} <- check_url(Keyword.get(opts, :return_url)),
-         {:ok, return_risk} <- Keyword.get(opts, :return_risk),
+         {:ok, return_risk} <- {:ok, Keyword.get(opts, :return_risk)},
          {:ok, user_visible_data} <- check_string(Keyword.get(opts, :user_visible_data)),
          {:ok, user_visible_data_format} <- check_string(Keyword.get(opts, :user_visible_data_format)),
          {:ok, user_non_visible_data} <- check_string(Keyword.get(opts, :user_non_visible_data))
