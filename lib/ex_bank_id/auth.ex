@@ -38,9 +38,9 @@ defmodule ExBankID.Auth do
     ]
   end
 
-  def auth(ip_address, opts) when is_binary(ip_address) and is_list(opts) do
+  def auth(ip_address, opts, params \\ []) when is_binary(ip_address) and is_list(opts) do
     with {:ok, opts} <- NimbleOptions.validate(opts, options()),
-         payload = %ExBankID.Auth.Payload{} <- ExBankID.Auth.Payload.new(ip_address, opts) do
+         payload = %ExBankID.Auth.Payload{} <- ExBankID.Auth.Payload.new(ip_address, params) do
       ExBankID.HttpRequest.send_request(payload, opts)
     end
   end
