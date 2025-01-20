@@ -2,7 +2,7 @@ defmodule ExBankID.Auth.Payload do
   @moduledoc """
   Provides the struct used when initiating a authentication
   """
-  defstruct [:endUserIp, :personalNumber, :requirement]
+  defstruct [:endUserIp, :returnUrl, :returnRisk, :userVisibleData, :userVisibleDataFormat, :userNonVisibleData, ]
 
   import ExBankID.PayloadHelpers
 
@@ -44,13 +44,20 @@ defmodule ExBankID.Auth.Payload do
   """
   def new(ip_address, opts \\ []) when is_binary(ip_address) and is_list(opts) do
     with {:ok, ip_address} <- check_ip_address(ip_address),
-         {:ok, personal_number} <- check_personal_number(Keyword.get(opts, :personal_number)),
-         {:ok, requirement} <- check_requirement(Keyword.get(opts, :requirement)) do
+         {:ok, return_url} <- check_url(Keyword.get(opts, :return_url)),
+         {:ok, return_risk} <- Keyword.get(opts, :return_risk),
+         {:ok, user_visible_data} <- check_string(Keyword.get(opts, :user_visible_data)),
+         {:ok, user_visible_data_format} <- check_string(Keyword.get(opts, :user_visible_data_format)),
+         {:ok, user_non_visible_data} <- check_string(Keyword.get(opts, :user_non_visible_data))
+      do
       %__MODULE__{
         endUserIp: ip_address,
-        personalNumber: personal_number,
-        requirement: requirement
-      }
+        returnUrl: return_url,
+        returnRisk: return_risk,
+        userVisibleData: user_visible_data,
+        userVisibleDataFormat: user_visible_data_format,
+        userNonVisibleData: user_non_visible_data 
+      } |> Enum.reject( fn {_, v} -> v == nil end ) |> Enum.into(%__MODULE__{})
     end
   end
 end

@@ -58,6 +58,34 @@ defmodule ExBankID.PayloadHelpers do
   end
 
   @doc """
+  Returns {:ok, string_value}, {:ok, nil} or {:error, reason} for personal number
+
+  ## Examples
+      iex> ExBankID.PayloadHelpers.check_string("190000000000")
+      {:ok, "190000000000"}
+
+      iex> ExBankID.PayloadHelpers.check_string("42")
+      {:error, "Invalid format (string): 42"}
+
+      iex> ExBankID.PayloadHelpers.check_string(nil)
+      {:ok, nil}
+  """
+  def check_string(str)
+      when is_binary(str) do
+    case String.length(personal_number) do
+      0 ->
+        {:ok, nil}
+
+      _ ->
+        {:ok, str}
+    end
+  end
+
+  def check_string(nil) do
+    {:ok, nil}
+  end
+
+  @doc """
   Returns:
     * {:ok, nil} when requirement is omitted
     * {:ok, requirement} when all requirement's keys are valid
