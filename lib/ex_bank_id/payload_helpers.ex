@@ -84,6 +84,31 @@ defmodule ExBankID.PayloadHelpers do
     {:ok, nil}
   end
 
+
+  @doc """
+  Returns {:ok, string_value}, {:ok, nil} or {:error, reason} for personal number
+
+  ## Examples
+      iex> ExBankID.PayloadHelpers.check_url("https://soomething.com")
+      {:ok, "https://soomething.com"}
+
+      iex> ExBankID.PayloadHelpers.check_url("42")
+      {:error, "Invalid format: 42"}
+
+      iex> ExBankID.PayloadHelpers.check_url(nil)
+      {:ok, nil}
+  """
+  def check_url(url) when is_binary(url) do
+    cond do
+      url =~ ~r/^https?:\/\/.+/ -> {:ok, url}
+      true -> {:error, "Invalid format: #{inspect(url)}"}     
+    end
+  end
+
+  def check_url(nil) do
+    {:ok, nil}
+  end
+
   @doc """
   Returns:
     * {:ok, nil} when requirement is omitted
