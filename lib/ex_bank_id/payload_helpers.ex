@@ -70,9 +70,8 @@ defmodule ExBankID.PayloadHelpers do
       iex> ExBankID.PayloadHelpers.check_string(nil)
       {:ok, nil}
   """
-  def check_string(str)
-      when is_binary(str) do
-    case String.length(personal_number) do
+  def check_string(str) when is_binary(str) do
+    case String.length(str) do
       0 ->
         {:ok, nil}
 
