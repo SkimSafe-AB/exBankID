@@ -57,7 +57,7 @@ defmodule ExBankID.Auth.Payload do
         userVisibleData: user_visible_data,
         userVisibleDataFormat: user_visible_data_format,
         userNonVisibleData: user_non_visible_data 
-      } |> Map.from_struct() |> Enum.reject( fn {_, v} -> v == nil end ) |> Enum.into(%__MODULE__{})
+      } |> Map.from_struct() |> Enum.reject( fn {_, v} -> v == nil end ) |> Enum.into(%{})
     end
   end
 end
